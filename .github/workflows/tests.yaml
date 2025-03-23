@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, bzlmod]
   pull_request:
     branches: [main]
 
@@ -21,25 +21,22 @@ jobs:
       id-token: 'write'
     steps:
       - uses: actions/checkout@v4
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          project_id: 'movieburn'
-          workload_identity_provider: 'projects/294914671277/locations/global/workloadIdentityPools/movieburn-bazel/providers/movieburn-provider'
-          service_account: 'mwl-service-account@movieburn.iam.gserviceaccount.com'
-          token_format: 'access_token'
+      # - id: 'auth'
+      #   uses: 'google-github-actions/auth@v2'
+      #   with:
+      #     project_id: 'movieburn'
+      #     workload_identity_provider: 'projects/294914671277/locations/global/workloadIdentityPools/movieburn-bazel/providers/movieburn-provider'
+      #     service_account: 'mwl-service-account@movieburn.iam.gserviceaccount.com'
+      #     token_format: 'access_token'
       - name: Unit
         env:
           USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
         run: |
           uname -a
           bazel query --output=build "@platforms//host:host"
-          bazel mod show_extension rules_nasm//nasm:extensions.bzl%nasm
-          bazel --bazelrc=${GITHUB_WORKSPACE}/.github/workflows/ci.bazelrc test //... --google_credentials="${{ steps.auth.outputs.credentials_file_path }}" --${{ matrix.bzlmod }}
+          bazel --bazelrc=${GITHUB_WORKSPACE}/.github/workflows/ci.bazelrc test //...
       - name: e2e
         env:
           USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
         run:
           e2e/test.sh --bazelrc=${GITHUB_WORKSPACE}/.github/workflows/ci.bazelrc
-          --google_credentials="${{ steps.auth.outputs.credentials_file_path }}"
-          --${{ matrix.bzlmod }}

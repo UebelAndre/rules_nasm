@@ -18,7 +18,7 @@ implementation is incomplete.
 <pre>
 load("@rules_nasm//nasm:defs.bzl", "nasm_binary")
 
-nasm_binary(<a href="#nasm_binary-name">name</a>, <a href="#nasm_binary-src">src</a>, <a href="#nasm_binary-hdrs">hdrs</a>, <a href="#nasm_binary-preincs">preincs</a>, <a href="#nasm_binary-includes">includes</a>, <a href="#nasm_binary-kwargs">kwargs</a>)
+nasm_binary(<a href="#nasm_binary-name">name</a>, <a href="#nasm_binary-srcs">srcs</a>, <a href="#nasm_binary-hdrs">hdrs</a>, <a href="#nasm_binary-copts">copts</a>, <a href="#nasm_binary-includes">includes</a>, <a href="#nasm_binary-linkopts">linkopts</a>, <a href="#nasm_binary-preincs">preincs</a>)
 </pre>
 
 Assemble a source file as an executable.
@@ -38,18 +38,18 @@ target platform. Some degree of portability can be ensured by using
 a macro to define global labels, and deduce the target platform by
 inspecting the target binary format.
 
+**ATTRIBUTES**
 
-**PARAMETERS**
 
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="nasm_binary-name"></a>name |  A unique name for this target.   |  none |
-| <a id="nasm_binary-src"></a>src |  The assembly source file.   |  none |
-| <a id="nasm_binary-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`. preincs: Assembly sources which will be included and processed before the source file. Sources will be included in the order listed.   |  `None` |
-| <a id="nasm_binary-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed.   |  `None` |
-| <a id="nasm_binary-includes"></a>includes |  Directories which will be added to the search path for include files.   |  `None` |
-| <a id="nasm_binary-kwargs"></a>kwargs |  Additional keyword arguments passed to the `cc_binary` rule.   |  none |
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="nasm_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="nasm_binary-srcs"></a>srcs |  The assembly source file. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_binary-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_binary-copts"></a>copts |  Additional compilation flags to `nasm`.   | List of strings | optional |  `[]`  |
+| <a id="nasm_binary-includes"></a>includes |  Directories which will be added to the search path for include files.   | List of strings | optional |  `[]`  |
+| <a id="nasm_binary-linkopts"></a>linkopts |  Extra flags to pass to the linker.   | List of strings | optional |  `[]`  |
+| <a id="nasm_binary-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 
 
 <a id="nasm_library"></a>
@@ -59,7 +59,7 @@ inspecting the target binary format.
 <pre>
 load("@rules_nasm//nasm:defs.bzl", "nasm_library")
 
-nasm_library(<a href="#nasm_library-name">name</a>, <a href="#nasm_library-src">src</a>, <a href="#nasm_library-hdrs">hdrs</a>, <a href="#nasm_library-preincs">preincs</a>, <a href="#nasm_library-includes">includes</a>, <a href="#nasm_library-kwargs">kwargs</a>)
+nasm_library(<a href="#nasm_library-name">name</a>, <a href="#nasm_library-srcs">srcs</a>, <a href="#nasm_library-hdrs">hdrs</a>, <a href="#nasm_library-copts">copts</a>, <a href="#nasm_library-includes">includes</a>, <a href="#nasm_library-linkopts">linkopts</a>, <a href="#nasm_library-preincs">preincs</a>)
 </pre>
 
 Assemble an `nasm` source for use as a C++ dependency.
@@ -69,18 +69,18 @@ Rather than create a `CcInfo` object directly, we pass the assembled
 object file as the src to a `cc_library` rule, which creates a
 corresponding provider, and captures any additional dependencies.
 
+**ATTRIBUTES**
 
-**PARAMETERS**
 
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="nasm_library-name"></a>name |  A unique name for this target.   |  none |
-| <a id="nasm_library-src"></a>src |  The assembly source file.   |  none |
-| <a id="nasm_library-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`.   |  `None` |
-| <a id="nasm_library-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed.   |  `None` |
-| <a id="nasm_library-includes"></a>includes |  Directories which will be added to the search path for include files.   |  `None` |
-| <a id="nasm_library-kwargs"></a>kwargs |  Additional keyword arguments passed to the `cc_library` rule.   |  none |
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="nasm_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="nasm_library-srcs"></a>srcs |  The assembly source file. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_library-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_library-copts"></a>copts |  Additional compilation flags to `nasm`.   | List of strings | optional |  `[]`  |
+| <a id="nasm_library-includes"></a>includes |  Directories which will be added to the search path for include files.   | List of strings | optional |  `[]`  |
+| <a id="nasm_library-linkopts"></a>linkopts |  Extra flags to pass to the linker.   | List of strings | optional |  `[]`  |
+| <a id="nasm_library-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 
 
 <a id="nasm_test"></a>
@@ -90,22 +90,75 @@ corresponding provider, and captures any additional dependencies.
 <pre>
 load("@rules_nasm//nasm:defs.bzl", "nasm_test")
 
-nasm_test(<a href="#nasm_test-name">name</a>, <a href="#nasm_test-src">src</a>, <a href="#nasm_test-size">size</a>, <a href="#nasm_test-hdrs">hdrs</a>, <a href="#nasm_test-preincs">preincs</a>, <a href="#nasm_test-includes">includes</a>, <a href="#nasm_test-kwargs">kwargs</a>)
+nasm_test(<a href="#nasm_test-name">name</a>, <a href="#nasm_test-srcs">srcs</a>, <a href="#nasm_test-hdrs">hdrs</a>, <a href="#nasm_test-copts">copts</a>, <a href="#nasm_test-includes">includes</a>, <a href="#nasm_test-linkopts">linkopts</a>, <a href="#nasm_test-preincs">preincs</a>)
 </pre>
 
 Assemble and execute a test assembly program.
 
-**PARAMETERS**
+**ATTRIBUTES**
 
 
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="nasm_test-name"></a>name |  A unique name for this target.   |  none |
-| <a id="nasm_test-src"></a>src |  The assembly source file.   |  none |
-| <a id="nasm_test-size"></a>size |  The "heaviness" of a test target. See [Bazel reference](https://bazel.build/reference/be/common-definitions#test.size) for details.   |  `None` |
-| <a id="nasm_test-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`. preincs: Assembly sources which will be included and processed before the source file. Sources will be included in the order listed.   |  `None` |
-| <a id="nasm_test-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed.   |  `None` |
-| <a id="nasm_test-includes"></a>includes |  Directories which will be added to the search path for include files.   |  `None` |
-| <a id="nasm_test-kwargs"></a>kwargs |  Additional keyword arguments passed to the `cc_test` rule.   |  none |
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="nasm_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="nasm_test-srcs"></a>srcs |  The assembly source file. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_test-hdrs"></a>hdrs |  Other assembly sources which may be included by `src`. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+| <a id="nasm_test-copts"></a>copts |  Additional compilation flags to `nasm`.   | List of strings | optional |  `[]`  |
+| <a id="nasm_test-includes"></a>includes |  Directories which will be added to the search path for include files.   | List of strings | optional |  `[]`  |
+| <a id="nasm_test-linkopts"></a>linkopts |  Extra flags to pass to the linker.   | List of strings | optional |  `[]`  |
+| <a id="nasm_test-preincs"></a>preincs |  Assembly sources which will be included and processed before the source file. Sources will be included in the order listed. Must have an extension of .asm, .nasm, .s, .i.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
+
+
+<a id="nasm_toolchain"></a>
+
+## nasm_toolchain
+
+<pre>
+load("@rules_nasm//nasm:defs.bzl", "nasm_toolchain")
+
+nasm_toolchain(<a href="#nasm_toolchain-name">name</a>, <a href="#nasm_toolchain-args">args</a>, <a href="#nasm_toolchain-nasm">nasm</a>)
+</pre>
+
+A toolchain for configuring `nasm` rules.
+
+A toolchain can be defined by adding a snippet like the following
+somewhere in a `BUILD.bazel` file within your workspace.
+
+```python
+load("@rules_nasm//nasm:defs.bzl", "nasm_toolchain")
+
+nasm_toolchain(
+    name = "nasm_toolchain",
+    args = select({
+        "//nasm:elf64": ["-felf64"],
+        "//nasm:macho64": ["-fmacho64"],
+        "//conditions:default": [],
+    }),
+    nasm = "@nasm",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "toolchain",
+    toolchain = ":nasm_toolchain",
+    toolchain_type = "@rules_nasm//nasm:toolchain_type",
+    visibility = ["//visibility:public"],
+)
+```
+
+Once the toolchain is defined, it will need to be registered in the `MODULE.bazel` file.
+
+```python
+register_toolchains("//:nasm_toolchain")
+```
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="nasm_toolchain-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="nasm_toolchain-args"></a>args |  Default arguments to pass to the `nasm` executable.   | List of strings | optional |  `[]`  |
+| <a id="nasm_toolchain-nasm"></a>nasm |  The `nasm` executable.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional |  `None`  |
 
 
